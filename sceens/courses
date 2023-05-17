@@ -1,0 +1,157 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'My Courses',
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.blue,
+      ),
+      home: MyCoursesPage(),
+    );
+  }
+}
+
+class MyCoursesPage extends StatefulWidget {
+  @override
+  _MyCoursesPageState createState() => _MyCoursesPageState();
+}
+
+class _MyCoursesPageState extends State<MyCoursesPage> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My Courses'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              // Implement search functionality here
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              // Implement menu functionality here
+            },
+          )],
+    flexibleSpace: Image.asset(
+    "assests/123.jpg",
+    fit: BoxFit.cover,
+    )
+      ),
+      body: Column(
+        children: [
+          TabBar(
+            controller: _tabController,
+            labelColor: Colors.grey,
+            unselectedLabelColor: Colors.grey,
+            tabs: const [
+              Tab(text:  'Ongoing',),
+              Tab(text: 'Completed'),
+            ],
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                // Ongoing courses
+                ListView(
+                  scrollDirection: Axis.vertical,
+                  padding: EdgeInsets.all(16.0),
+                  children: [
+                    CourseCard('Course 1'),
+                    CourseCard('Course 2'),
+                    CourseCard('Course 4'),
+                    CourseCard('Course 5'),
+                    CourseCard('Course 6'),
+                  ],
+                ),
+
+                // Completed courses
+                ListView(
+                  scrollDirection: Axis.vertical,
+                  padding: EdgeInsets.all(10.0),
+                  children: [
+                    CourseCard('Course 4'),
+                    CourseCard('Course 5'),
+                    CourseCard('Course 6'),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: 0,
+          onTap: (int index) {
+            setState(() {});
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home, color: Colors.grey),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications, color: Colors.grey),
+              label: 'Notification',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person, color: Colors.grey),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book, color: Colors.grey),
+              label: 'Courses',
+            ),
+          ]
+      ),
+    );
+  }
+}
+
+class CourseCard extends StatelessWidget {
+  final String courseName;
+
+  CourseCard(this.courseName);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.only(bottom: 16.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      child: ListTile(
+        title: Text(courseName),
+        subtitle: Text('Course description'),
+        trailing: Icon(Icons.arrow_forward),
+        onTap: () {
+          // Implement course details navigation here
+        },
+      ),
+    );
+  }
+}
